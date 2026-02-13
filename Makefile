@@ -12,9 +12,9 @@ help:
 
 run:
 ifdef OUT
-	uv run python src/main.py --pricat data/pricat.csv --mappings data/mappings.csv -o $(OUT)
+	uv run python src/main.py --input data/pricat.csv --mappings data/mappings.csv -o $(OUT)
 else
-	uv run python src/main.py --pricat data/pricat.csv --mappings data/mappings.csv
+	uv run python src/main.py --input data/pricat.csv --mappings data/mappings.csv
 endif
 
 test:

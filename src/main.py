@@ -7,13 +7,13 @@ from src.services import FileService, PipelineService
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Transform CSV catalog to hierarchical JSON.")
-    parser.add_argument("--pricat", required=True, type=Path, help="Price catalog CSV")
-    parser.add_argument("--mappings", required=True, type=Path, help="Mappings CSV")
+    parser.add_argument("--input", "-i", required=True, type=Path, help="Input catalog CSV")
+    parser.add_argument("--mappings", "-m", required=True, type=Path, help="Mappings CSV")
     parser.add_argument("--output", "-o", type=Path, help="Output JSON (default: stdout)")
     args = parser.parse_args()
 
-    if not args.pricat.exists():
-        print(f"Error: {args.pricat} not found", file=sys.stderr)
+    if not args.input.exists():
+        print(f"Error: {args.input} not found", file=sys.stderr)
         return 1
     if not args.mappings.exists():
         print(f"Error: {args.mappings} not found", file=sys.stderr)
@@ -21,7 +21,7 @@ def main() -> int:
 
     file_service = FileService()
     pipeline = PipelineService(file_service)
-    catalog = pipeline.transform(args.pricat, args.mappings)
+    catalog = pipeline.transform(args.input, args.mappings)
 
     if args.output:
         file_service.write_json(catalog, args.output)

@@ -40,13 +40,13 @@ pip install -r requirements.txt
 
 ```bash
 # Using uv
-uv run python src/main.py --pricat data/pricat.csv --mappings data/mappings.csv
+uv run python src/main.py --input data/pricat.csv --mappings data/mappings.csv
 
 # Using pip
-python src/main.py --pricat data/pricat.csv --mappings data/mappings.csv
+python src/main.py --input data/pricat.csv --mappings data/mappings.csv
 
 # Save to file
-python src/main.py --pricat data/pricat.csv --mappings data/mappings.csv -o output.json
+python src/main.py -i data/pricat.csv -m data/mappings.csv -o output.json
 ```
 
 ## Makefile
