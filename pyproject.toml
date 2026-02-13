@@ -3,7 +3,7 @@ name = "catalog-pipeline"
 version = "0.1.0"
 description = "Catalog transformation pipeline for supplier data"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 dependencies = [
     "annotated-types==0.7.0",
     "pydantic==2.12.5",
