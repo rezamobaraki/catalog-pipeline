@@ -1,9 +1,27 @@
 import logging
+from dataclasses import dataclass
 from pathlib import Path
+from typing import NamedTuple
 
 from src.services.file_service import FileService
 
 logger = logging.getLogger(__name__)
+
+
+class SingleKey(NamedTuple):
+    field: str
+    value: str
+
+
+class CompositeKey(NamedTuple):
+    fields: tuple[str, ...]
+    values: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class MappingResult:
+    field: str
+    value: str
 
 
 class MappingService:
@@ -11,8 +29,8 @@ class MappingService:
 
 	def __init__(self, file_service: FileService) -> None:
 		self._file_service = file_service
-		self._single: dict[tuple[str, str], tuple[str, str]] = {}
-		self._composite: dict[tuple[tuple[str, ...], tuple[str, ...]], tuple[str, str]] = {}
+        self._single: dict[SingleKey, MappingResult] = {}
+        self._composite: dict[CompositeKey, MappingResult] = {}
 		self._mapped_fields: set[str] = set()
 
 	def load(self, path: str | Path) -> None:
@@ -32,7 +50,7 @@ class MappingService:
 				self._add_single(src_type, src, dst_type, dst)
 
 	def _add_single(self, src_type: str, src: str, dst_type: str, dst: str) -> None:
-		self._single[(src_type, src)] = (dst_type, dst)
+        self._single[SingleKey(src_type, src)] = MappingResult(dst_type, dst)
 		self._mapped_fields.add(src_type)
 
 	def _add_composite(self, src_type: str, src: str, dst_type: str, dst: str) -> None:
@@ -43,7 +61,7 @@ class MappingService:
 			logger.warning(f"Mismatched composite mapping: {src_type}={src}")
 			return
 
-		self._composite[(fields, values)] = (dst_type, dst)
+        self._composite[CompositeKey(fields, values)] = MappingResult(dst_type, dst)
 		self._mapped_fields.update(fields)
 
 	def apply(self, row: dict[str, str]) -> dict[str, str]:
@@ -51,14 +69,15 @@ class MappingService:
 
 		# Apply single mappings
 		for field, value in row.items():
-			if value and (field, value) in self._single:
-				dst_type, dst_value = self._single[(field, value)]
-				result[dst_type] = dst_value
+            key = SingleKey(field, value)
+            if value and key in self._single:
+                mapping = self._single[key]
+                result[mapping.field] = mapping.value
 
 		# Apply composite mappings
-		for (fields, values), (dst_type, dst_value) in self._composite.items():
-			if all(row.get(f, "").strip() == v for f, v in zip(fields, values, strict=True)):
-				result[dst_type] = dst_value
+        for key, mapping in self._composite.items():
+            if all(row.get(f, "").strip() == v for f, v in zip(key.fields, key.values, strict=True)):
+                result[mapping.field] = mapping.value
 
 		# Passthrough unmapped fields
 		for field, value in row.items():

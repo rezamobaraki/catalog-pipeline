@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from src.services import FileService, MappingService
+from src.services.mapping_service import CompositeKey, MappingResult, SingleKey
 
 
 class TestSingleFieldMapping:
@@ -8,7 +9,7 @@ class TestSingleFieldMapping:
         """season=winter → season=Winter"""
         file_service = FileService()
         engine = MappingService(file_service)
-        engine._single[("season", "winter")] = ("season", "Winter")
+        engine._single[SingleKey("season", "winter")] = MappingResult("season", "Winter")
         engine._mapped_fields.add("season")
 
         result = engine.apply({"season": "winter"})
@@ -32,7 +33,7 @@ class TestSingleFieldMapping:
         """Mapped field with no match doesn't passthrough."""
         file_service = FileService()
         engine = MappingService(file_service)
-        engine._single[("season", "winter")] = ("season", "Winter")
+        engine._single[SingleKey("season", "winter")] = MappingResult("season", "Winter")
         engine._mapped_fields.add("season")
 
         result = engine.apply({"season": "autumn"})
@@ -44,7 +45,7 @@ class TestCompositeMapping:
         """size_group_code=EU + size_code=36 → size=European size 36"""
         file_service = FileService()
         engine = MappingService(file_service)
-        engine._composite[(("size_group_code", "size_code"), ("EU", "36"))] = (
+        engine._composite[CompositeKey(("size_group_code", "size_code"), ("EU", "36"))] = MappingResult(
             "size", "European size 36"
         )
         engine._mapped_fields.update({"size_group_code", "size_code"})
@@ -56,7 +57,7 @@ class TestCompositeMapping:
         """Partial match doesn't transform."""
         file_service = FileService()
         engine = MappingService(file_service)
-        engine._composite[(("size_group_code", "size_code"), ("EU", "36"))] = (
+        engine._composite[CompositeKey(("size_group_code", "size_code"), ("EU", "36"))] = MappingResult(
             "size", "European size 36"
         )
         engine._mapped_fields.update({"size_group_code", "size_code"})
@@ -75,8 +76,8 @@ class TestMappingServiceLoad:
         engine = MappingService(file_service)
         engine.load(csv_file)
 
-        assert ("season", "winter") in engine._single
-        assert engine._single[("season", "winter")] == ("season", "Winter")
+        assert SingleKey("season", "winter") in engine._single
+        assert engine._single[SingleKey("season", "winter")] == MappingResult("season", "Winter")
 
     def test_load_composite_mapping(self, tmp_path: Path):
         csv_content = (
@@ -90,7 +91,7 @@ class TestMappingServiceLoad:
         engine = MappingService(file_service)
         engine.load(csv_file)
 
-        key = (("size_group_code", "size_code"), ("EU", "36"))
+        key = CompositeKey(("size_group_code", "size_code"), ("EU", "36"))
         assert key in engine._composite
 
     def test_mapped_fields_tracked(self, tmp_path: Path):
