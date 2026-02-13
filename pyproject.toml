@@ -13,3 +13,8 @@ dev = [
     "pytest",
     "ruff",
 ]
+
+[dependency-groups]
+dev = [
+    "rich>=14.3.2",
+]
