@@ -3,7 +3,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-from .article import Article
+from src.domains.article import Article
 
 
 class Catalog(BaseModel):

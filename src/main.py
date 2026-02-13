@@ -2,7 +2,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from services import FileService, PipelineService
+from src.services import FileService, PipelineService
 
 
 def main() -> int:
