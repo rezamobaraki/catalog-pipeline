@@ -65,4 +65,4 @@ uv run pytest           # Run tests
 uv run ruff check src   # Lint
 ```
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for design details.
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE-1.md) for design details.

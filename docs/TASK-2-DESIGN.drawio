@@ -1,0 +1,408 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.8 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.8">
+  <diagram name="AWS Product Import Pipeline" id="PmpEf7WKlGbv-7wki6q2">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ==================== TITLE ==================== -->
+        <mxCell id="title" value="AWS Asynchronous Product Import Pipeline" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1;fontColor=#232F3E;" vertex="1" parent="1">
+          <mxGeometry x="500" y="20" width="600" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== SWIMLANE: UPLOAD PHASE ==================== -->
+        <mxCell id="lane_upload" value="" style="swimlane;startSize=30;horizontal=1;fillColor=#E8F5E9;strokeColor=#4CAF50;strokeWidth=2;rounded=1;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="400" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_upload_title" value="① UPLOAD PHASE" style="text;html=1;strokeColor=none;fillColor=#4CAF50;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="120" y="90" width="240" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Client -->
+        <mxCell id="client" value="Client" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#232F3D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=14;fontStyle=1;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.user;" vertex="1" parent="1">
+          <mxGeometry x="80" y="180" width="70" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- API Gateway -->
+        <mxCell id="apigateway" value="API Gateway" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#945DF2;gradientDirection=north;fillColor=#5A30B5;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=13;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.api_gateway;" vertex="1" parent="1">
+          <mxGeometry x="200" y="180" width="70" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Lambda Job Creator -->
+        <mxCell id="lambda_job" value="Lambda&#xa;Create Job" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;" vertex="1" parent="1">
+          <mxGeometry x="320" y="180" width="70" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- DynamoDB Jobs -->
+        <mxCell id="dynamodb_jobs" value="DynamoDB&#xa;Job Status" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#4D72F3;gradientDirection=north;fillColor=#3334B9;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;" vertex="1" parent="1">
+          <mxGeometry x="320" y="290" width="70" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow: Client to API Gateway -->
+        <mxCell id="arr1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#333333;strokeWidth=3;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="client" target="apigateway">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr1_label" value="POST /jobs" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=1;labelBackgroundColor=#E8F5E9;" vertex="1" connectable="0" parent="arr1">
+          <mxGeometry x="-0.1" relative="1" as="geometry"><mxPoint y="-12" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <!-- Arrow: API Gateway to Lambda -->
+        <mxCell id="arr2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#333333;strokeWidth=3;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="apigateway" target="lambda_job">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow: Lambda to DynamoDB -->
+        <mxCell id="arr3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3334B9;strokeWidth=2;endArrow=blockThin;endFill=1;dashed=1;" edge="1" parent="1" source="lambda_job" target="dynamodb_jobs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr3_label" value="Save Job" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;labelBackgroundColor=#E8F5E9;" vertex="1" connectable="0" parent="arr3">
+          <mxGeometry x="0.2" relative="1" as="geometry"><mxPoint x="12" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <!-- ==================== SWIMLANE: STORAGE ==================== -->
+        <mxCell id="lane_storage" value="" style="swimlane;startSize=30;horizontal=1;fillColor=#E3F2FD;strokeColor=#2196F3;strokeWidth=2;rounded=1;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="80" width="280" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_storage_title" value="② STORAGE" style="text;html=1;strokeColor=none;fillColor=#2196F3;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="520" y="90" width="160" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- S3 Bucket -->
+        <mxCell id="s3_bucket" value="S3 Bucket" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#60A337;gradientDirection=north;fillColor=#277116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=14;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" vertex="1" parent="1">
+          <mxGeometry x="560" y="150" width="80" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- S3 Prefixes Box -->
+        <mxCell id="s3_prefixes" value="Prefixes:&#xa;📁 raw/&#xa;📁 processed/&#xa;📁 derivatives/&#xa;📁 quarantine/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#277116;strokeWidth=2;align=left;verticalAlign=top;spacingLeft=10;fontSize=12;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="500" y="260" width="200" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow: Lambda to S3 (pre-signed) -->
+        <mxCell id="arr4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#277116;strokeWidth=2;endArrow=blockThin;endFill=1;dashed=1;exitX=1;exitY=0.5;" edge="1" parent="1" source="lambda_job" target="s3_bucket">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr4_label" value="Generate&#xa;Pre-signed URL" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;labelBackgroundColor=#E3F2FD;" vertex="1" connectable="0" parent="arr4">
+          <mxGeometry x="-0.2" relative="1" as="geometry"><mxPoint y="-15" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <!-- Arrow: Client to S3 (upload) -->
+        <mxCell id="arr5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#277116;strokeWidth=3;endArrow=blockThin;endFill=1;exitX=0.5;exitY=0;entryX=0;entryY=0.5;" edge="1" parent="1" source="client" target="s3_bucket">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="115" y="130" />
+              <mxPoint x="480" y="130" />
+              <mxPoint x="480" y="190" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arr5_label" value="Upload JSON (pre-signed)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=1;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="arr5">
+          <mxGeometry x="0.1" relative="1" as="geometry"><mxPoint y="-10" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <!-- ==================== SWIMLANE: ORCHESTRATION ==================== -->
+        <mxCell id="lane_orchestration" value="" style="swimlane;startSize=30;horizontal=1;fillColor=#FFF3E0;strokeColor=#FF9800;strokeWidth=2;rounded=1;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="80" width="240" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_orchestration_title" value="③ TRIGGER" style="text;html=1;strokeColor=none;fillColor=#FF9800;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="800" y="90" width="160" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- EventBridge -->
+        <mxCell id="eventbridge" value="EventBridge" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#FF4F8B;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=13;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.eventbridge;" vertex="1" parent="1">
+          <mxGeometry x="840" y="150" width="80" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Step Functions -->
+        <mxCell id="stepfunctions" value="Step Functions" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#FF4F8B;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=13;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.step_functions;" vertex="1" parent="1">
+          <mxGeometry x="840" y="280" width="80" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow: S3 to EventBridge -->
+        <mxCell id="arr6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#BC1356;strokeWidth=3;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="s3_bucket" target="eventbridge">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr6_label" value="S3 Event" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=1;labelBackgroundColor=#FFF3E0;" vertex="1" connectable="0" parent="arr6">
+          <mxGeometry x="-0.1" relative="1" as="geometry"><mxPoint y="-12" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <!-- Arrow: EventBridge to Step Functions -->
+        <mxCell id="arr7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#BC1356;strokeWidth=3;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="eventbridge" target="stepfunctions">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arr7_label" value="Start&#xa;Pipeline" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=1;labelBackgroundColor=#FFF3E0;" vertex="1" connectable="0" parent="arr7">
+          <mxGeometry x="0.1" relative="1" as="geometry"><mxPoint x="25" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <!-- ==================== SWIMLANE: PROCESSING PIPELINE ==================== -->
+        <mxCell id="lane_processing" value="" style="swimlane;startSize=30;horizontal=1;fillColor=#FCE4EC;strokeColor=#E91E63;strokeWidth=2;rounded=1;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="420" width="960" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_processing_title" value="④ PROCESSING PIPELINE (Step Functions State Machine)" style="text;html=1;strokeColor=none;fillColor=#E91E63;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="280" y="430" width="480" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Lambda Validate -->
+        <mxCell id="lambda_validate" value="Validate" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;" vertex="1" parent="1">
+          <mxGeometry x="80" y="500" width="65" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- ECS Antivirus -->
+        <mxCell id="ecs_antivirus" value="Antivirus&#xa;(ECS)" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ecs;" vertex="1" parent="1">
+          <mxGeometry x="200" y="500" width="65" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- Lambda Normalize -->
+        <mxCell id="lambda_normalize" value="Normalize&#xa;Metadata" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;" vertex="1" parent="1">
+          <mxGeometry x="320" y="500" width="65" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- Lambda/ECS Media -->
+        <mxCell id="lambda_media" value="Media&#xa;Processing" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;" vertex="1" parent="1">
+          <mxGeometry x="440" y="500" width="65" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- Lambda Persist -->
+        <mxCell id="lambda_persist" value="Persist&#xa;Data" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;" vertex="1" parent="1">
+          <mxGeometry x="560" y="500" width="65" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- Lambda Index -->
+        <mxCell id="lambda_index" value="Index&#xa;Search" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;" vertex="1" parent="1">
+          <mxGeometry x="680" y="500" width="65" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- Lambda Notify -->
+        <mxCell id="lambda_notify" value="Notify&#xa;Success" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;" vertex="1" parent="1">
+          <mxGeometry x="880" y="500" width="65" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- Processing Arrows -->
+        <mxCell id="parr1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E91E63;strokeWidth=3;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="lambda_validate" target="ecs_antivirus">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="parr2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E91E63;strokeWidth=3;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="ecs_antivirus" target="lambda_normalize">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="parr3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E91E63;strokeWidth=3;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="lambda_normalize" target="lambda_media">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="parr4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E91E63;strokeWidth=3;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="lambda_media" target="lambda_persist">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="parr5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E91E63;strokeWidth=3;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="lambda_persist" target="lambda_index">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="parr6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4CAF50;strokeWidth=3;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="lambda_index" target="lambda_notify">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="parr6_label" value="✓ Success" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=1;fontColor=#4CAF50;labelBackgroundColor=#FCE4EC;" vertex="1" connectable="0" parent="parr6">
+          <mxGeometry x="-0.1" relative="1" as="geometry"><mxPoint y="-12" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <!-- Step Functions to Pipeline -->
+        <mxCell id="arr_sf_pipeline" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#BC1356;strokeWidth=3;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="stepfunctions" target="lambda_validate">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="880" y="400" />
+              <mxPoint x="113" y="400" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== SWIMLANE: DATA STORES ==================== -->
+        <mxCell id="lane_datastores" value="" style="swimlane;startSize=30;horizontal=1;fillColor=#E8EAF6;strokeColor=#3F51B5;strokeWidth=2;rounded=1;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="720" width="680" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_datastores_title" value="⑤ DATA STORES" style="text;html=1;strokeColor=none;fillColor=#3F51B5;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="280" y="730" width="200" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- RDS Proxy -->
+        <mxCell id="rds_proxy" value="RDS Proxy" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#4D72F3;gradientDirection=north;fillColor=#3334B9;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.rds_proxy_instance;" vertex="1" parent="1">
+          <mxGeometry x="120" y="790" width="65" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- Aurora PostgreSQL -->
+        <mxCell id="aurora" value="Aurora&#xa;PostgreSQL" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#4D72F3;gradientDirection=north;fillColor=#3334B9;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.aurora;" vertex="1" parent="1">
+          <mxGeometry x="260" y="790" width="65" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- OpenSearch -->
+        <mxCell id="opensearch" value="OpenSearch" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#4D72F3;gradientDirection=north;fillColor=#3334B9;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.opensearch_service;" vertex="1" parent="1">
+          <mxGeometry x="400" y="790" width="65" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- S3 Derivatives small -->
+        <mxCell id="s3_deriv" value="S3&#xa;derivatives/" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#60A337;gradientDirection=north;fillColor=#277116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" vertex="1" parent="1">
+          <mxGeometry x="540" y="790" width="65" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- Arrows to Data Stores -->
+        <mxCell id="darr1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3334B9;strokeWidth=2;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="lambda_persist" target="rds_proxy">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="593" y="680" />
+              <mxPoint x="153" y="680" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="darr2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3334B9;strokeWidth=2;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="rds_proxy" target="aurora">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="darr3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3334B9;strokeWidth=2;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="lambda_index" target="opensearch">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="713" y="680" />
+              <mxPoint x="433" y="680" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="darr4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#277116;strokeWidth=2;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="lambda_media" target="s3_deriv">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="473" y="680" />
+              <mxPoint x="573" y="680" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Search Label -->
+        <mxCell id="search_label" value="🔍 High-Performance&#xa;Search Queries" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1;fontColor=#3F51B5;" vertex="1" parent="1">
+          <mxGeometry x="480" y="825" width="130" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== SWIMLANE: NOTIFICATIONS ==================== -->
+        <mxCell id="lane_notify" value="" style="swimlane;startSize=30;horizontal=1;fillColor=#F3E5F5;strokeColor=#9C27B0;strokeWidth=2;rounded=1;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="740" y="720" width="260" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_notify_title" value="⑥ NOTIFICATIONS" style="text;html=1;strokeColor=none;fillColor=#9C27B0;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="790" y="730" width="160" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- SNS -->
+        <mxCell id="sns" value="SNS" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#FF4F8B;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=13;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sns;" vertex="1" parent="1">
+          <mxGeometry x="780" y="800" width="60" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- SES -->
+        <mxCell id="ses" value="SES" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F34482;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=13;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.simple_email_service;" vertex="1" parent="1">
+          <mxGeometry x="880" y="800" width="60" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- User Notified -->
+        <mxCell id="user_notified" value="📧 Uploader" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#232F3D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=1;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.user;" vertex="1" parent="1">
+          <mxGeometry x="960" y="800" width="50" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Notification Arrows -->
+        <mxCell id="narr1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#9C27B0;strokeWidth=2;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="lambda_notify" target="sns">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="913" y="680" />
+              <mxPoint x="810" y="680" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="narr2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#9C27B0;strokeWidth=2;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="sns" target="ses">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="narr3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#9C27B0;strokeWidth=2;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="ses" target="user_notified">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== ERROR HANDLING BOX ==================== -->
+        <mxCell id="error_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEBEE;strokeColor=#F44336;strokeWidth=2;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="420" width="200" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="error_title" value="❌ ERROR HANDLING" style="text;html=1;strokeColor=none;fillColor=#F44336;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="430" width="160" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- S3 Quarantine -->
+        <mxCell id="s3_quarantine" value="S3&#xa;quarantine/" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#60A337;gradientDirection=north;fillColor=#277116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" vertex="1" parent="1">
+          <mxGeometry x="1085" y="480" width="50" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Lambda Error -->
+        <mxCell id="lambda_error" value="Error&#xa;Handler" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;" vertex="1" parent="1">
+          <mxGeometry x="1085" y="580" width="50" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Error Text -->
+        <mxCell id="error_text" value="• Infected files → quarantine&#xa;• Update job status: FAILED&#xa;• Notify uploader with error" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#C62828;" vertex="1" parent="1">
+          <mxGeometry x="1145" y="500" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Error Arrow from Antivirus -->
+        <mxCell id="err_arr1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#F44336;strokeWidth=2;endArrow=blockThin;endFill=1;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="ecs_antivirus" target="s3_quarantine">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="290" y="533" />
+              <mxPoint x="290" y="460" />
+              <mxPoint x="1050" y="460" />
+              <mxPoint x="1050" y="505" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="err_arr1_label" value="Virus Found" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;fontColor=#F44336;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="err_arr1">
+          <mxGeometry x="-0.5" relative="1" as="geometry"><mxPoint x="20" y="-10" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <!-- Error Arrow to Handler -->
+        <mxCell id="err_arr2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#F44336;strokeWidth=2;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="s3_quarantine" target="lambda_error">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Error to SNS -->
+        <mxCell id="err_arr3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#F44336;strokeWidth=2;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=1;entryY=0;" edge="1" parent="1" source="lambda_error" target="sns">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1110" y="700" />
+              <mxPoint x="830" y="700" />
+              <mxPoint x="830" y="800" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== LEGEND ==================== -->
+        <mxCell id="legend_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAFAFA;strokeColor=#9E9E9E;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="80" width="220" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_title" value="LEGEND" style="text;html=1;strokeColor=none;fillColor=#9E9E9E;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="1290" y="90" width="120" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_content" value="&lt;div style=&quot;text-align: left;&quot;&gt;&lt;b style=&quot;&quot;&gt;Flow:&lt;/b&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;━━ Main Flow&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(76, 175, 80);&quot;&gt;━━ Success Path&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(244, 67, 54);&quot;&gt;┄┄ Error Path&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;b&gt;Services:&lt;/b&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(208, 92, 23);&quot;&gt;🟠&lt;/span&gt; Lambda / ECS&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(39, 113, 22);&quot;&gt;🟢&lt;/span&gt; S3 Storage&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(51, 52, 185);&quot;&gt;🔵&lt;/span&gt; Databases&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(188, 19, 86);&quot;&gt;🔴&lt;/span&gt; Integration&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;b&gt;Key Features:&lt;/b&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;✓ Pre-signed URL upload&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;✓ Step Functions retry&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;✓ RDS Proxy (conn pool)&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;✓ OpenSearch queries&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;spacingLeft=5;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="120" width="200" height="210" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== SECURITY BOX ==================== -->
+        <mxCell id="security_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FFC107;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="360" width="220" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="security_title" value="🔒 SECURITY" style="text;html=1;strokeColor=none;fillColor=#FFC107;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1290" y="370" width="120" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="security_content" value="• KMS encryption (SSE-KMS)&#xa;• IAM least privilege roles&#xa;• Pre-signed URL (15 min TTL)&#xa;• VPC endpoints (optional)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;spacingLeft=5;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="400" width="200" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== OBSERVABILITY BOX ==================== -->
+        <mxCell id="obs_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F7FA;strokeColor=#00BCD4;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="500" width="220" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="obs_title" value="📊 OBSERVABILITY" style="text;html=1;strokeColor=none;fillColor=#00BCD4;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="1280" y="510" width="140" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="obs_content" value="• CloudWatch Logs/Metrics&#xa;• X-Ray distributed tracing&#xa;• Step Functions console" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;spacingLeft=5;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="540" width="200" height="55" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
