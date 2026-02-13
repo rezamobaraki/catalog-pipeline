@@ -1,75 +1,58 @@
 # Catalog Transformation Pipeline
 
-A Python-based pipeline that transforms flat CSV price catalogs into structured, optimized JSON hierarchies.
+Transforms flat CSV price catalogs into hierarchical JSON.
 
-## 🚀 Senior-Level Highlights
+## Features
 
-- **Pragmatic Design**: Simple, readable code that avoids over-engineering while maintaining high standards.
-- **Robust Promotion Algorithm**: Smartly lifts common attributes (like `brand` or `season`) up the tree while keeping SKU-specific data (like `ean`) localized.
-- **Performance**: O(1) attribute mapping using pre-compiled hash maps.
-- **Zero-Boilerplate Models**: Built with **Pydantic V2** for instant type-safe validation and serialization.
-- **Quality Assured**: 100% test coverage on core logic with **Pytest** and strictly linted with **Ruff**.
+- Mapping engine for value normalization (single-field and composite)
+- Attribute promotion to reduce redundancy
+- Pydantic models for validation
+- Full test coverage
 
-## 🛠 Project Structure
+## Structure
 
-```bash
+```
 src/
-├── models.py      # Pydantic schema (Catalog -> Article -> Variation)
-├── mapping.py     # High-performance Mapping Engine
-├── pipeline.py    # Transformation and Attribute Promotion logic
-├── reader.py      # Dynamic CSV parsing
-├── writer.py      # JSON serialization
-└── main.py        # CLI entry point
+├── models.py      # Catalog, Article, Variation
+├── mapping.py     # Value mapping logic
+├── pipeline.py    # Transformation and promotion
+├── reader.py      # CSV parsing
+├── writer.py      # JSON output
+└── main.py        # CLI
 ```
 
-## 📦 Installation
+## Install
 
-This project uses standard Python libraries + Pydantic.
-
-### Option 1: Using pip (Standard)
 ```bash
-# Recommended: install in venv
 pip install -r requirements.txt
-pip install pytest ruff  # for dev/test
-```
-
-### Option 2: Using uv (Fast)
-```bash
-# Install dependencies
-uv pip install -r requirements.txt
-# Or if using uv project management
+# or
 uv sync
 ```
 
-## 💻 Usage
+## Usage
 
-### With python
 ```bash
-# Basic run
 python src/main.py --pricat data/pricat.csv --mappings data/mappings.csv
 
 # Save to file
 python src/main.py --pricat data/pricat.csv --mappings data/mappings.csv -o output.json
 ```
 
-### With uv
+### Using Makefile
+
 ```bash
-# Using uv run
-uv run src/main.py --pricat data/pricat.csv --mappings data/mappings.csv
+make run                  # Run the application
+make test                 # Run tests
+make update-requirements  # Update requirements.txt
+make help                 # Show all commands
 ```
 
-## 🧪 Testing & Quality
-```bash
-# Run the test suite
-pytest
-# Or with uv
-uv run pytest
+## Dev
 
-# Check code quality
-ruff check src tests
-# Or with uv
-uv run ruff check src tests
+```bash
+pytest              # Run tests
+ruff check src tests  # Lint
 ```
 
----
-*For a detailed breakdown of design decisions, data edge cases, and architectural tradeoffs, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).*
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for details.
+

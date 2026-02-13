@@ -1,29 +1,30 @@
-# Catalog Transformation Pipeline — Design Document
+# Design Notes
 
-> **Senior Software Engineer Submission**  
-> **Focus:** Clarity, Correctness, and Pragmatic Design.
+## Problem
 
----
+Transform flat CSV catalog into hierarchical JSON (Catalog > Article > Variation). Main challenge is deciding which attributes to promote to avoid redundancy.
 
-## 1. Executive Summary
+## Data Flow
 
-This solution transforms a flat CSV price catalog into a hierarchical JSON structure. It features a robust **Mapping Engine** for value normalization and an **Attribute Promotion** algorithm that optimizes the hierarchy by moving common attributes to the highest possible level (Variation → Article → Catalog).
+```mermaid
+sequenceDiagram
+    participant CSV as pricat.csv
+    participant Map as MappingEngine
+    participant Pipe as Pipeline
+    participant JSON as Output
 
-## 2. Senior-Level Highlights
+    CSV->>Pipe: Stream rows
+    loop Per row
+        Pipe->>Map: apply(row)
+        Map-->>Pipe: transformed dict
+    end
+    Pipe->>Pipe: Group by article
+    Pipe->>Pipe: Promote common attributes
+    Pipe->>JSON: Serialize
+```
 
-| Feature | Design Choice | Rationale |
-|---------|---------------|-----------|
-| **Domain Models** | Pydantic V2 | Type safety, automatic validation, and built-in serialization without boilerplate. |
-| **Mapping Performance** | O(1) Hash Map Lookups | Pre-compiled mappings for both single-field and composite keys ensure efficiency regardless of catalog size. |
-| **Promotion Logic** | Set-based intersections | A generic algorithm handles attribute promotion up any number of levels, correctly excluding identity fields like EAN. |
-| **Processing Strategy** | Hybrid Batch/Stream | Streams row-level transformation (O(1) memory) but buffers for promotion (O(n) memory), which is functionally required to see "all children". |
-| **Pragmatism** | Flat `src/` Structure | Avoided over-engineering (no unnecessary `services/` or `protocols`) while maintaining strict single-responsibility files. |
+## Models
 
----
-
-## 3. Architecture
-
-### Class Design
 ```mermaid
 classDiagram
     class Catalog {
@@ -42,71 +43,51 @@ classDiagram
         +dict attributes
     }
     
-    class MappingEngine {
-        -dict _single
-        -dict _composite
-        +apply(row) dict
-    }
-    
     Catalog "1" *-- "*" Article
     Article "1" *-- "*" Variation
 ```
 
-### Transformation Flow
-```mermaid
-sequenceDiagram
-    participant CSV as pricat.csv
-    participant Map as MappingEngine
-    participant Pipe as Pipeline
-    participant JSON as JSON Output
+Using Pydantic for validation and JSON serialization.
 
-    CSV->>Pipe: Stream rows
-    loop Transformation
-        Pipe->>Map: apply(row)
-        Map-->>Pipe: transformed dict
-    end
-    Pipe->>Pipe: Group & Promote
-    Pipe->>JSON: Serialize
-```
+## Mapping Engine
 
----
+Reads `mappings.csv` and builds lookup tables:
+- Single mappings: `(field, value) -> (dest_field, dest_value)`
+- Composite mappings: `((field1, field2), (val1, val2)) -> (dest_field, dest_value)`
 
-## 4. Key Implementation Details
+Fields in mappings but with no matching value get dropped. Everything else passes through unchanged if non-empty.
 
-### The Mapping Engine
-The engine differentiates between **Mapped Fields** (fields explicitly defined in `mappings.csv`) and **Passthrough Fields**.
-- **Rule**: If a field is in a mapping but the value doesn't match, it is **dropped** (assuming invalid data).
-- **Rule**: If a field is *not* in any mapping, it is **passed through** as-is.
+## Attribute Promotion
 
-### Attribute Promotion Algorithm
-Promotion is the "trickiest" part of the task. My algorithm works recursively:
-1.  **Collect**: Gather all attributes from children.
-2.  **Compare**: Find keys where the value is identical across *all* children.
-3.  **Promote**: Lift those keys to the parent and remove them from the children.
-4.  **Exclude**: Identity fields (EAN, article_id) are explicitly blacklisted from promotion to prevent data corruption.
+For each group of children (variations in article, articles in catalog):
+1. Find attributes where all children have identical values
+2. Move to parent
+3. Remove from children
 
-### Data Edge Cases Handled
-- **Empty Cells**: Stripped out entirely to keep JSON clean.
-- **Price Variation**: Correctly identified that prices vary by material within some articles, keeping them at the Variation level.
-- **Composite Splitting**: Handles `|` delimiters used in the mapping file for multi-column keys.
+Never promote identity fields (ean, article_id).
 
----
+Runs in two passes:
+- Variations → Articles
+- Articles → Catalog
 
-## 5. Tradeoffs: Stream vs. Batch
+## Processing Approach
 
-### Decision: Hybrid Approach
-Because the task requires **Attribute Promotion** (knowing if *all* children share a value), true streaming of the output is impossible until the group is fully read.
+Can't fully stream because promotion needs to see all siblings to find common attributes. So:
+- Stream: CSV reading and row mapping
+- Batch: Grouping and promotion
 
-- **Phase 1 (Stream)**: CSV reading and Mapping are performed per-row.
-- **Phase 2 (Batch)**: Grouping and Promotion are performed in-memory.
-- **Scaling**: For a 100k row catalog (~40MB), this easily fits in standard container memory (256MB+). If we reached 10M+ rows, we would implement per-article buffering using sorted inputs.
+For the dataset size, everything fits in memory easily.
 
----
+## Edge Cases
 
-## 6. Testing Strategy
+- Empty values filtered out
+- Prices vary by material within articles, so stay at variation level
+- Composite mappings use `|` delimiter
 
-I prioritized high-signal tests over raw coverage:
-- **Unit Tests**: Isolated Mapping Engine (single/composite) and Promotion logic.
-- **Integration Tests**: Full end-to-end run using the provided `pricat.csv`, verifying that `brand` lifts to the catalog while `ean` stays at the variation.
-- **Edge Case Tests**: Verified that empty CSV columns do not appear in output.
+## Tests
+
+- Mapping logic (single/composite)
+- Promotion algorithm
+- End-to-end with real data
+- Edge cases (empty values, price variance)
 
