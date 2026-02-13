@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Any
 
 from src.domains import Article, Catalog, Variation
 from src.services.file_service import FileService

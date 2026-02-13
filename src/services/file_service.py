@@ -2,7 +2,7 @@ import csv
 from collections.abc import Iterator
 from pathlib import Path
 
-from domains import Catalog
+from src.domains import Catalog
 
 
 class FileService:
