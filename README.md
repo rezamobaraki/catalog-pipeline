@@ -4,55 +4,65 @@ Transforms flat CSV price catalogs into hierarchical JSON.
 
 ## Features
 
-- Mapping engine for value normalization (single-field and composite)
+- Value mapping (single-field and composite)
 - Attribute promotion to reduce redundancy
 - Pydantic models for validation
-- Full test coverage
+- Dependency injection for testability
 
 ## Structure
 
 ```
 src/
-├── models.py      # Catalog, Article, Variation
-├── mapping.py     # Value mapping logic
-├── pipeline.py    # Transformation and promotion
-├── reader.py      # CSV parsing
-├── writer.py      # JSON output
-└── main.py        # CLI
+├── main.py                 # CLI entry point
+├── domains/                # Domain models (Pydantic)
+│   ├── variation.py
+│   ├── article.py
+│   └── catalog.py
+├── services/               # Business logic
+│   ├── file_service.py     # CSV/JSON I/O
+│   ├── mapping_service.py  # Value transformations
+│   └── pipeline_service.py # Main pipeline
+└── utils/                  # Helper functions
+    └── promotion.py        # Attribute promotion
 ```
 
 ## Install
 
 ```bash
-pip install -r requirements.txt
-# or
+# Using uv (recommended)
 uv sync
+
+# Using pip
+pip install -r requirements.txt
 ```
 
 ## Usage
 
 ```bash
+# Using uv
+uv run python src/main.py --pricat data/pricat.csv --mappings data/mappings.csv
+
+# Using pip
 python src/main.py --pricat data/pricat.csv --mappings data/mappings.csv
 
 # Save to file
 python src/main.py --pricat data/pricat.csv --mappings data/mappings.csv -o output.json
 ```
 
-### Using Makefile
+## Makefile
 
 ```bash
-make run                  # Run the application
-make test                 # Run tests
-make update-requirements  # Update requirements.txt
-make help                 # Show all commands
+make run       # Run pipeline
+make test      # Run tests
+make lint      # Run ruff
+make help      # Show commands
 ```
 
 ## Dev
 
 ```bash
-pytest              # Run tests
-ruff check src tests  # Lint
+uv run pytest           # Run tests
+uv run ruff check src   # Lint
 ```
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for details.
-
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for design details.

@@ -1,93 +1,100 @@
-# Design Notes
+# Architecture
 
 ## Problem
 
-Transform flat CSV catalog into hierarchical JSON (Catalog > Article > Variation). Main challenge is deciding which attributes to promote to avoid redundancy.
+Transform flat CSV catalog into hierarchical JSON (Catalog > Article > Variation).
 
 ## Data Flow
 
 ```mermaid
 sequenceDiagram
     participant CSV as pricat.csv
-    participant Map as MappingEngine
-    participant Pipe as Pipeline
+    participant FS as FileService
+    participant MS as MappingService
+    participant PS as PipelineService
     participant JSON as Output
 
-    CSV->>Pipe: Stream rows
+    CSV->>FS: read_csv()
+    FS->>PS: rows
     loop Per row
-        Pipe->>Map: apply(row)
-        Map-->>Pipe: transformed dict
+        PS->>MS: apply(row)
+        MS-->>PS: transformed
     end
-    Pipe->>Pipe: Group by article
-    Pipe->>Pipe: Promote common attributes
-    Pipe->>JSON: Serialize
+    PS->>PS: group_by_article()
+    PS->>PS: promote_attributes()
+    PS->>FS: write_json()
+    FS->>JSON: catalog.json
 ```
 
-## Models
+## Class Diagram
 
 ```mermaid
 classDiagram
+    class FileService {
+        +read_csv(path) Iterator
+        +write_json(catalog, path)
+    }
+    
+    class MappingService {
+        +load(path)
+        +apply(row) dict
+    }
+    
+    class PipelineService {
+        -file_service: FileService
+        +transform(pricat, mappings) Catalog
+    }
+    
     class Catalog {
-        +dict attributes
-        +list~Article~ articles
+        +attributes: dict
+        +articles: list
+        +to_json() str
     }
     
     class Article {
-        +str article_id
-        +dict attributes
-        +list~Variation~ variations
+        +article_id: str
+        +attributes: dict
+        +variations: list
     }
     
     class Variation {
-        +str ean
-        +dict attributes
+        +ean: str
+        +attributes: dict
     }
     
+    PipelineService --> FileService
+    PipelineService --> MappingService
     Catalog "1" *-- "*" Article
     Article "1" *-- "*" Variation
 ```
 
-Using Pydantic for validation and JSON serialization.
+## Services
 
-## Mapping Engine
+**FileService**: Handles CSV reading and JSON writing.
 
-Reads `mappings.csv` and builds lookup tables:
-- Single mappings: `(field, value) -> (dest_field, dest_value)`
-- Composite mappings: `((field1, field2), (val1, val2)) -> (dest_field, dest_value)`
+**MappingService**: Loads mappings and transforms field values.
+- Single: `(field, value) → (dest_field, dest_value)`
+- Composite: `((f1, f2), (v1, v2)) → (dest_field, dest_value)`
 
-Fields in mappings but with no matching value get dropped. Everything else passes through unchanged if non-empty.
+**PipelineService**: Orchestrates the transformation.
 
 ## Attribute Promotion
 
-For each group of children (variations in article, articles in catalog):
-1. Find attributes where all children have identical values
-2. Move to parent
-3. Remove from children
+For each group of children:
+1. Find attributes where all have identical values
+2. Move to parent, remove from children
 
-Never promote identity fields (ean, article_id).
+Never promotes: `ean`, `article_id`, `article_number`
 
-Runs in two passes:
-- Variations → Articles
-- Articles → Catalog
+## Processing
 
-## Processing Approach
+- **Stream**: CSV reading, row mapping
+- **Batch**: Grouping, promotion (needs all siblings)
 
-Can't fully stream because promotion needs to see all siblings to find common attributes. So:
-- Stream: CSV reading and row mapping
-- Batch: Grouping and promotion
-
-For the dataset size, everything fits in memory easily.
+Dataset fits in memory.
 
 ## Edge Cases
 
-- Empty values filtered out
-- Prices vary by material within articles, so stay at variation level
+- Empty values filtered
+- Prices vary by material → stay at variation level
 - Composite mappings use `|` delimiter
-
-## Tests
-
-- Mapping logic (single/composite)
-- Promotion algorithm
-- End-to-end with real data
-- Edge cases (empty values, price variance)
-
