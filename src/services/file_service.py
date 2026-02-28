@@ -8,7 +8,7 @@ from src.domains import Catalog
 class FileService:
 	def read_csv(self, path: str | Path) -> Iterator[dict[str, str]]:
 		with open(path, newline="", encoding="utf-8") as f:
-			reader = csv.DictReader(f)
+			reader = csv.DictReader(f, delimiter=";")
 			for row in reader:
 				yield {k: v.strip() for k, v in row.items() if k is not None and v is not None}
 
