@@ -49,6 +49,7 @@ def main() -> int:
         return 0
 
     except PricatError as e:
+        logging.error("Pipeline error: %s", e)
         print(f"Error: {e}", file=sys.stderr)
         return 1
     except Exception as e:

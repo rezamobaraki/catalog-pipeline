@@ -3,6 +3,7 @@ from typing import Any
 from pydantic import BaseModel, Field, field_validator
 
 from src.domains.variation import Variation
+from src.exceptions import ValidationError
 
 
 class Article(BaseModel):
@@ -13,7 +14,10 @@ class Article(BaseModel):
     @field_validator("article_id")
     @classmethod
     def validate_article_id_not_empty(cls, v: str) -> str:
-        """Validate article_id is not empty."""
         if not v or not v.strip():
-            raise ValueError("article_id cannot be empty")
+            raise ValidationError(
+                "article_id cannot be empty",
+                field="article_id",
+                value=v,
+            )
         return v
