@@ -47,3 +47,42 @@ Serverless, event-driven pipeline: **S3 → EventBridge → Step Functions → L
 | Persistence                   | Aurora PostgreSQL via RDS Proxy                            |
 | Search by color/size/material | OpenSearch with keyword fields                             |
 | Error notification            | SNS → SES emails uploader                                  |
+
+---
+
+## Medallion Architecture
+
+The pipeline follows a **Medallion (Bronze → Silver → Gold)** layered data model. Each Step Functions step writes its output to a dedicated S3 prefix, creating an auditable trail:
+
+| Layer      | Pipeline Step               | S3 Prefix               | Data State                                         |
+|------------|-----------------------------|--------------------------|----------------------------------------------------|
+| **Bronze** | Upload                      | `raw/{job_id}/`          | Original file as received from the client          |
+| **Silver** | Validate → AV → Normalize  | `silver/{job_id}/`       | Validated, scanned, metadata-standardized product data |
+| **Gold**   | Media → Persist → Index    | `gold/{job_id}/`         | Enriched data with generated media, persisted in Aurora & indexed in OpenSearch |
+
+### Benefits
+
+- **Traceability**: Every processing stage has its own snapshot in S3 — inspecting `silver/` reveals exactly what the normalizer produced before persistence.
+- **Replayability**: If the Media or Persist step fails, re-run from the Silver layer without re-uploading or re-validating.
+- **Debugging**: Step Functions execution history + S3 layer snapshots provide full lineage from raw upload to indexed product.
+
+### Step-Level Intermediate Results
+
+Each Lambda/ECS step writes a result artifact to S3 alongside updating the DynamoDB job record:
+
+```
+s3://product-pipeline/
+├── raw/{job_id}/upload.json           # Bronze: original upload
+├── silver/{job_id}/validated.json     # After schema validation
+├── silver/{job_id}/scanned.json       # After antivirus (clean flag)
+├── silver/{job_id}/normalized.json    # After metadata standardization
+├── gold/{job_id}/media-manifest.json  # Generated media URLs
+└── gold/{job_id}/persisted.json       # Final record IDs in Aurora
+```
+
+This allows operators to:
+- Trace any product back to its raw input
+- Compare before/after for each transformation step
+- Replay individual steps during incident investigation
+- Retain data lineage for compliance and auditing
+
