@@ -14,7 +14,7 @@
               "article_number_3": "Aviation",
               "color": "Nero",
               "material": "Aviation",
-              "price_buy_net": "58.5",
+              "price_buy_net_currency": "58.5 EUR",
               "price_sell": "139.95",
               "size": "European size 38",
               "size_name": "38"
@@ -28,7 +28,7 @@
               "article_number_3": "Aviation",
               "color": "Nero",
               "material": "Aviation",
-              "price_buy_net": "58.5",
+              "price_buy_net_currency": "58.5 EUR",
               "price_sell": "139.95",
               "size": "European size 39",
               "size_name": "39"
@@ -42,7 +42,7 @@
               "article_number_3": "Aviation",
               "color": "Nero",
               "material": "Aviation",
-              "price_buy_net": "58.5",
+              "price_buy_net_currency": "58.5 EUR",
               "price_sell": "139.95",
               "size": "European size 36",
               "size_name": "36"
@@ -56,7 +56,7 @@
               "article_number_3": "Aviation",
               "color": "Nero",
               "material": "Aviation",
-              "price_buy_net": "58.5",
+              "price_buy_net_currency": "58.5 EUR",
               "price_sell": "139.95",
               "size": "European size 40",
               "size_name": "40"
@@ -70,7 +70,7 @@
               "article_number_3": "Aviation",
               "color": "Nero",
               "material": "Aviation",
-              "price_buy_net": "58.5",
+              "price_buy_net_currency": "58.5 EUR",
               "price_sell": "139.95",
               "size": "European size 37",
               "size_name": "37"
@@ -84,7 +84,7 @@
               "article_number_3": "Aviation",
               "color": "Nero",
               "material": "Aviation",
-              "price_buy_net": "58.5",
+              "price_buy_net_currency": "58.5 EUR",
               "price_sell": "139.95",
               "size": "European size 42",
               "size_name": "42"
@@ -98,7 +98,7 @@
               "article_number_3": "Aviation",
               "color": "Nero",
               "material": "Aviation",
-              "price_buy_net": "58.5",
+              "price_buy_net_currency": "58.5 EUR",
               "price_sell": "139.95",
               "size": "European size 41",
               "size_name": "41"
@@ -112,7 +112,7 @@
               "article_number_3": "Mojito",
               "color": "Bosco Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 40",
               "size_name": "40"
@@ -126,7 +126,7 @@
               "article_number_3": "Mojito",
               "color": "Bosco Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 37",
               "size_name": "37"
@@ -140,7 +140,7 @@
               "article_number_3": "Mojito",
               "color": "Bosco Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 36",
               "size_name": "36"
@@ -154,7 +154,7 @@
               "article_number_3": "Mojito",
               "color": "Bosco Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 38",
               "size_name": "38"
@@ -168,7 +168,7 @@
               "article_number_3": "Mojito",
               "color": "Bosco Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 39",
               "size_name": "39"
@@ -182,7 +182,7 @@
               "article_number_3": "Mojito",
               "color": "Bosco Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 41",
               "size_name": "41"
@@ -196,7 +196,7 @@
               "article_number_3": "Mojito",
               "color": "Bosco Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 42",
               "size_name": "42"
@@ -210,7 +210,7 @@
               "article_number_3": "Mojito",
               "color": "Brandy Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 37",
               "size_name": "37"
@@ -224,7 +224,7 @@
               "article_number_3": "Mojito",
               "color": "Brandy Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 36",
               "size_name": "36"
@@ -238,7 +238,7 @@
               "article_number_3": "Mojito",
               "color": "Brandy Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 38",
               "size_name": "38"
@@ -252,7 +252,7 @@
               "article_number_3": "Mojito",
               "color": "Brandy Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 41",
               "size_name": "41"
@@ -266,7 +266,7 @@
               "article_number_3": "Mojito",
               "color": "Brandy Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 42",
               "size_name": "42"
@@ -280,7 +280,7 @@
               "article_number_3": "Mojito",
               "color": "Brandy Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 39",
               "size_name": "39"
@@ -294,7 +294,7 @@
               "article_number_3": "Mojito",
               "color": "Brandy Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 40",
               "size_name": "40"
@@ -308,7 +308,7 @@
               "article_number_3": "Mojito",
               "color": "Indaco Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 40",
               "size_name": "40"
@@ -322,7 +322,7 @@
               "article_number_3": "Mojito",
               "color": "Indaco Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 42",
               "size_name": "42"
@@ -336,7 +336,7 @@
               "article_number_3": "Mojito",
               "color": "Indaco Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 37",
               "size_name": "37"
@@ -350,7 +350,7 @@
               "article_number_3": "Mojito",
               "color": "Indaco Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 36",
               "size_name": "36"
@@ -364,7 +364,7 @@
               "article_number_3": "Mojito",
               "color": "Indaco Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 38",
               "size_name": "38"
@@ -378,7 +378,7 @@
               "article_number_3": "Mojito",
               "color": "Indaco Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 39",
               "size_name": "39"
@@ -392,7 +392,7 @@
               "article_number_3": "Mojito",
               "color": "Indaco Nero",
               "material": "Mojito",
-              "price_buy_net": "62.5",
+              "price_buy_net_currency": "62.5 EUR",
               "price_sell": "149.95",
               "size": "European size 41",
               "size_name": "41"
@@ -405,7 +405,7 @@
         "article_id": "4701013-00",
         "attributes": {
           "article_structure": "Boot",
-          "price_buy_net": "71.0",
+          "price_buy_net_currency": "71.0 EUR",
           "price_sell": "169.95"
         },
         "variations": [
@@ -667,7 +667,6 @@
     "attributes": {
       "brand": "Via Vai",
       "collection": "Winter Collection 2017/2018",
-      "currency": "EUR",
       "season": "Winter",
       "supplier": "Rupesco BV",
       "target_area": "Woman Shoes"

@@ -2,20 +2,21 @@
 
 export PYTHONPATH := $(CURDIR)
 
+BASE_CMD    := uv run python src/main.py --input data/pricat.csv --mappings data/mappings.csv
+OUT_FLAG    := $(if $(OUT),-o $(OUT))
+COMBINE_FLAGS := $(foreach c,$(COMBINE),--combine $(c))
+
 help:
-	@echo "Commands:"
-	@echo "  make run              - Run pipeline (stdout)"
-	@echo "  make run OUT=file.json - Run pipeline (save to file)"
-	@echo "  make test             - Run tests"
-	@echo "  make lint             - Run ruff"
-	@echo "  make update-requirements - Update requirements.txt"
+	@echo "Usage:"
+	@echo "  make run                                    - Run pipeline (stdout)"
+	@echo "  make run OUT=file.json                      - Run pipeline (save to file)"
+	@echo "  make run COMBINE=price_buy_net,currency     - Run with field combining"
+	@echo "  make test                                   - Run tests"
+	@echo "  make lint                                   - Run ruff"
+	@echo "  make update-requirements                    - Update requirements.txt"
 
 run:
-ifdef OUT
-	uv run python src/main.py --input data/pricat.csv --mappings data/mappings.csv -o $(OUT)
-else
-	uv run python src/main.py --input data/pricat.csv --mappings data/mappings.csv
-endif
+	$(BASE_CMD) $(OUT_FLAG) $(COMBINE_FLAGS)
 
 test:
 	uv run pytest tests/

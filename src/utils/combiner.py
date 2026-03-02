@@ -1,9 +1,7 @@
-
-
 class FieldCombiner:
-    """Combines multiple fields into a single field with configurable separator."""
-
-    def __init__(self, combinations: list[tuple[str, ...]], separator: str = " ") -> None:
+    def __init__(
+        self, combinations: list[tuple[str, ...]], separator: str = " "
+    ) -> None:
         self._combinations = combinations
         self._separator = separator
 
@@ -26,3 +24,7 @@ class FieldCombiner:
                 result[combined_key] = combined_value
 
         return result
+
+    @staticmethod
+    def parse_spec(spec: str):
+        return [s.strip() for s in spec.split(",")]

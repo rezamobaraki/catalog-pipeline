@@ -34,8 +34,7 @@ def main() -> int:
         # Parse field combinations
         combiner = None
         if args.combine:
-            combinations = [tuple(spec.split(",")) for spec in args.combine]
-            combiner = FieldCombiner(combinations)
+            combiner = FieldCombiner([FieldCombiner.parse_spec(spec) for spec in args.combine])
 
         file_service = FileService()
         pipeline = PipelineService(file_service, combiner)
