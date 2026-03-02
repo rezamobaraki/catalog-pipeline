@@ -50,6 +50,44 @@ Event-driven, cloud-agnostic pipeline: **MinIO → Kafka → Consumers → Postg
 
 ---
 
+## Medallion Architecture
+
+The pipeline follows a **Medallion (Bronze → Silver → Gold)** layered data model. Each Kafka consumer writes its output to a dedicated MinIO prefix, creating an auditable trail:
+
+| Layer      | Pipeline Step                | MinIO Prefix             | Data State                                         |
+|------------|------------------------------|--------------------------|----------------------------------------------------|
+| **Bronze** | Upload                       | `raw/{job_id}/`          | Original file as received from the client          |
+| **Silver** | Validate → AV → Normalize   | `silver/{job_id}/`       | Validated, scanned, metadata-standardized product data |
+| **Gold**   | Media → Persist → Index     | `gold/{job_id}/`         | Enriched data with generated media, persisted in PostgreSQL & indexed in Elasticsearch |
+
+### Benefits
+
+- **Traceability**: Every consumer writes its output to both the next Kafka topic and a MinIO snapshot — inspecting `silver/` reveals exactly what the normalizer produced before persistence.
+- **Replayability**: Kafka's message replay + MinIO layer snapshots allow re-processing from any stage without re-uploading.
+- **Debugging**: Kafka consumer offsets + MinIO layer snapshots provide full lineage from raw upload to indexed product.
+
+### Step-Level Intermediate Results
+
+Each consumer writes a result artifact to MinIO alongside publishing to the next Kafka topic:
+
+```
+minio://product-pipeline/
+├── raw/{job_id}/upload.json           # Bronze: original upload
+├── silver/{job_id}/validated.json     # After schema validation
+├── silver/{job_id}/scanned.json       # After antivirus (clean flag)
+├── silver/{job_id}/normalized.json    # After metadata standardization
+├── gold/{job_id}/media-manifest.json  # Generated media URLs
+└── gold/{job_id}/persisted.json       # Final record IDs in PostgreSQL
+```
+
+This allows operators to:
+- Trace any product back to its raw input
+- Compare before/after for each transformation step
+- Replay individual steps using Kafka consumer offsets or MinIO snapshots
+- Retain data lineage for compliance and auditing
+
+---
+
 ## Why Kafka vs AWS Native?
 
 | Kafka             | AWS (Step Functions) |

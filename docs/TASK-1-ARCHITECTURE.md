@@ -174,6 +174,43 @@ async def transform_async(self, files: list[Path]):
 
 This allows processing multiple supplier catalogs in parallel without blocking on I/O operations. Useful when handling 10+ catalogs per batch job.
 
+## Medallion Architecture
+
+The pipeline naturally maps to a **Medallion (Bronze → Silver → Gold)** layered data architecture:
+
+| Layer      | Stage                       | Data State                                          | Storage (if persisted)          |
+|------------|-----------------------------|-----------------------------------------------------|---------------------------------|
+| **Bronze** | CSV ingestion               | Raw rows from `pricat.csv`, unvalidated             | `output/bronze/raw_rows.json`   |
+| **Silver** | Mapping + field combination | Rows with mapped/normalized fields, empty values removed | `output/silver/mapped_rows.json`|
+| **Gold**   | Grouping + promotion        | Hierarchical Catalog → Article → Variation          | `output/gold/catalog.json`      |
+
+### Why Medallion?
+
+- **Traceability**: Each layer is an independently inspectable snapshot — if Gold output looks wrong, check Silver to see if the mapping was correct, or Bronze to verify the raw input.
+- **Replayability**: Re-run Silver → Gold without re-reading CSV; useful during development and debugging.
+- **Testing**: Unit tests can assert on each layer independently (e.g., test mapping without grouping).
+
+### Intermediate Step Results
+
+For debugging and auditing, the pipeline can optionally persist the result of each step:
+
+```
+output/
+├── bronze/
+│   └── raw_rows.json          # Raw CSV rows as list of dicts
+├── silver/
+│   └── mapped_rows.json       # After mapping + field combination
+└── gold/
+    └── catalog.json           # Final hierarchical output
+```
+
+This is especially valuable when:
+- Investigating mapping errors (compare Bronze vs Silver)
+- Validating promotion logic (compare Silver vs Gold)
+- Reproducing issues from production data
+
+In the current implementation the Gold layer output is `result.json`. Adding Bronze/Silver persistence is a configuration flag — disabled by default to avoid I/O overhead, enabled for tracing or debugging sessions.
+
 ## Edge Cases
 
 - Empty values filtered
