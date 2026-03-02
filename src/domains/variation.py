@@ -1,7 +1,10 @@
+import logging
 from decimal import Decimal, InvalidOperation
 from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
+
+logger = logging.getLogger(__name__)
 
 
 class Variation(BaseModel):
@@ -13,9 +16,9 @@ class Variation(BaseModel):
     def validate_ean_format(cls, v: str) -> str:
         if v and v != "UNKNOWN":
             if not v.isdigit():
-                raise ValueError(f"EAN must be numeric, got: {v!r}")
-            if len(v) not in (8, 12, 13, 14):
-                raise ValueError(f"EAN must be 8/12/13/14 digits, got {len(v)}")
+                logger.warning("EAN must be numeric, got: %r — keeping original value", v)
+            elif len(v) not in (8, 12, 13, 14):
+                logger.warning("EAN should be 8/12/13/14 digits, got %d — keeping original value", len(v))
         return v
 
     @field_validator("attributes")
@@ -23,7 +26,7 @@ class Variation(BaseModel):
     def validate_currency_field(cls, v: dict[str, Any]) -> dict[str, Any]:
         if currency := v.get("currency"):
             if not (len(currency) == 3 and currency.isalpha() and currency.isupper()):
-                raise ValueError(f"Currency must be 3-letter ISO code, got: {currency!r}")
+                logger.warning("Currency should be 3-letter ISO code, got: %r — keeping original value", currency)
         return v
 
     @field_validator("attributes")
@@ -33,7 +36,7 @@ class Variation(BaseModel):
             if price_value := v.get(price_field):
                 try:
                     if Decimal(str(price_value)) < 0:
-                        raise ValueError(f"{price_field} cannot be negative")
+                        logger.warning("%s is negative — keeping original value", price_field)
                 except (InvalidOperation, ValueError):
-                    pass  # Lenient validation, keep original value
+                    logger.warning("%s is not a valid decimal — keeping original value", price_field)
         return v

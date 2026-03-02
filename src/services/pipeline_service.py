@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Optional
 
 from src.domains import Article, Catalog, Variation
 from src.services.file_service import FileService
@@ -7,7 +8,7 @@ from src.utils import NEVER_PROMOTE, FieldCombiner, group_by_article, promote_at
 
 
 class PipelineService:
-	def __init__(self, file_service: FileService, combiner: FieldCombiner | None = None) -> None:
+	def __init__(self, file_service: FileService, combiner: Optional[FieldCombiner] = None) -> None:
 		self._file_service = file_service
 		self._combiner = combiner
 

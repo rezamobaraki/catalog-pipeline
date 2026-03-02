@@ -1,8 +1,11 @@
+import logging
 from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
 from src.domains.variation import Variation
+
+logger = logging.getLogger(__name__)
 
 
 class Article(BaseModel):
@@ -14,5 +17,5 @@ class Article(BaseModel):
     @classmethod
     def validate_article_id_not_empty(cls, value: str) -> str:
         if not value or not value.strip():
-            raise ValueError("article_id cannot be empty")
+            logger.warning("article_id is empty — keeping original value")
         return value
