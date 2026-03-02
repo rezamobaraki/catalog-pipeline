@@ -28,13 +28,13 @@ class FileService:
                     if cleaned_row:
                         yield cleaned_row
         except (UnicodeDecodeError, OSError) as e:
-	        raise FileReadError(path, reason=str(e))
+            raise FileReadError(path, reason=str(e))
 
     def write_json(self, catalog: Catalog, path: str | Path) -> None:
-	    path = Path(path)
-	    try:
-		    path.parent.mkdir(parents=True, exist_ok=True)
-		    with open(path, "w", encoding="utf-8") as f:
-			    f.write(catalog.to_json())
-	    except OSError as exc:
-		    raise FileWriteError(path, reason=str(exc)) from exc
+        path = Path(path)
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(catalog.to_json())
+        except OSError as exc:
+            raise FileWriteError(path, reason=str(exc)) from exc

@@ -12,39 +12,39 @@ class Variation(BaseModel):
 
     @field_validator("ean")
     @classmethod
-    def validate_ean_format(cls, v: str) -> str:
-        if v and v != "UNKNOWN":
-            if not v.isdigit():
+    def validate_ean_format(cls, value: str) -> str:
+        if value and value != "UNKNOWN":
+            if not value.isdigit():
                 raise ValidationError(
-                    f"EAN must be numeric, got: {v!r}",
+                    f"EAN must be numeric, got: {value!r}",
                     field="ean",
-                    value=v,
+                    value=value,
                 )
-            if len(v) not in (8, 12, 13, 14):
+            if len(value) not in (8, 12, 13, 14):
                 raise ValidationError(
-                    f"EAN must be 8/12/13/14 digits, got {len(v)}",
+                    f"EAN must be 8/12/13/14 digits, got {len(value)}",
                     field="ean",
-                    value=v,
+                    value=value,
                 )
-        return v
+        return value
 
     @field_validator("attributes")
     @classmethod
-    def validate_currency_field(cls, v: dict[str, Any]) -> dict[str, Any]:
-        if currency := v.get("currency"):
+    def validate_currency_field(cls, value: dict[str, Any]) -> dict[str, Any]:
+        if currency := value.get("currency"):
             if not (len(currency) == 3 and currency.isalpha() and currency.isupper()):
                 raise ValidationError(
                     f"Currency must be 3-letter ISO code, got: {currency!r}",
                     field="currency",
                     value=currency,
                 )
-        return v
+        return value
 
     @field_validator("attributes")
     @classmethod
-    def validate_price_fields(cls, v: dict[str, Any]) -> dict[str, Any]:
+    def validate_price_fields(cls, value: dict[str, Any]) -> dict[str, Any]:
         for price_field in ("price_buy_net", "price_sell"):
-            if price_value := v.get(price_field):
+            if price_value := value.get(price_field):
                 try:
                     if Decimal(str(price_value)) < 0:
                         raise ValidationError(
@@ -57,4 +57,4 @@ class Variation(BaseModel):
                         pass  # Lenient validation, keep original value
                     else:
                         raise
-        return v
+        return value

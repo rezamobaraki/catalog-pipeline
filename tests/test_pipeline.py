@@ -66,7 +66,7 @@ class TestTransformCatalog:
         file_service = FileService()
         pipeline = PipelineService(file_service)
         catalog = pipeline.transform(pricat, mappings)
-        data = json.loads(catalog.to_json())
+        data = json.loads(catalog.model_dump_json())
 
         assert "catalog" in data
         assert "attributes" in data["catalog"]
