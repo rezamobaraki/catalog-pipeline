@@ -7,20 +7,34 @@ from src.exceptions import FileReadError, FileWriteError
 
 
 class FileService:
-	def read_csv(self, path: str | Path, delimiter: str = ";") -> Iterator[dict[str, str]]:
-		try:
-			with open(path, newline="", encoding="utf-8") as f:
-				reader = csv.DictReader(f, delimiter=delimiter)
-				for row in reader:
-					yield {k: v.strip() for k, v in row.items() if k is not None and v is not None}
-		except OSError as exc:
-			raise FileReadError(path, reason=str(exc)) from exc
+    def read_csv(
+        self, path: str | Path, delimiter: str = ";"
+    ) -> Iterator[dict[str, str]]:
+        path = Path(path)
+        if not path.exists():
+            raise FileReadError(f"File not found: {path}")
 
-	def write_json(self, catalog: Catalog, path: str | Path) -> None:
-		path = Path(path)
-		try:
-			path.parent.mkdir(parents=True, exist_ok=True)
-			with open(path, "w", encoding="utf-8") as f:
-				f.write(catalog.to_json())
-		except OSError as exc:
-			raise FileWriteError(path, reason=str(exc)) from exc
+        try:
+            with open(path, newline="", encoding="utf-8") as f:
+                reader = csv.DictReader(f, delimiter=delimiter)
+
+                if not reader.fieldnames:
+                    raise FileReadError(f"No header row found in {path}")
+
+                for row in reader:
+                    cleaned_row = {
+                        k: v.strip() for k, v in row.items() if k and v is not None
+                    }
+                    if cleaned_row:
+                        yield cleaned_row
+        except (UnicodeDecodeError, OSError) as e:
+	        raise FileReadError(path, reason=str(e))
+
+    def write_json(self, catalog: Catalog, path: str | Path) -> None:
+	    path = Path(path)
+	    try:
+		    path.parent.mkdir(parents=True, exist_ok=True)
+		    with open(path, "w", encoding="utf-8") as f:
+			    f.write(catalog.to_json())
+	    except OSError as exc:
+		    raise FileWriteError(path, reason=str(exc)) from exc

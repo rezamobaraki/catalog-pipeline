@@ -1,6 +1,7 @@
 class FieldCombiner:
-
-    def __init__(self, combinations: list[tuple[str, ...]], separator: str = " ") -> None:
+    def __init__(
+        self, combinations: list[tuple[str, ...]], separator: str = " "
+    ) -> None:
         self._combinations = combinations
         self._separator = separator
 
@@ -10,13 +11,20 @@ class FieldCombiner:
         for fields in self._combinations:
             values = [result.get(f, "") for f in fields]
 
+            # Only combine if all fields are present and non-empty
             if all(values):
                 combined_key = "_".join(fields)
                 combined_value = self._separator.join(values)
 
+                # Remove original fields
                 for field in fields:
                     result.pop(field, None)
 
+                # Add combined field
                 result[combined_key] = combined_value
 
         return result
+
+    @staticmethod
+    def parse_spec(spec: str):
+        return [s.strip() for s in spec.split(",")]

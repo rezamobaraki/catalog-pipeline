@@ -13,11 +13,11 @@ class Article(BaseModel):
 
     @field_validator("article_id")
     @classmethod
-    def validate_article_id_not_empty(cls, v: str) -> str:
-        if not v or not v.strip():
+    def validate_article_id_not_empty(cls, value: str) -> str:
+        if not value or not value.strip():
             raise ValidationError(
                 "article_id cannot be empty",
                 field="article_id",
-                value=v,
+                value=value,
             )
-        return v
+        return value

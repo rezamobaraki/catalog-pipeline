@@ -1,6 +1,6 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.5.2 Chrome/142.0.7444.265 Electron/39.6.1 Safari/537.36" version="29.5.2">
   <diagram name="AWS Product Import Pipeline" id="PmpEf7WKlGbv-7wki6q2">
-    <mxGraphModel dx="1554" dy="960" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1400" math="0" shadow="0">
+    <mxGraphModel dx="757" dy="1371" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1400" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -154,6 +154,9 @@
         <mxCell id="lane_processing" parent="Qld4n7ctP4lOtZgbt6Y--6" style="swimlane;startSize=30;horizontal=1;fillColor=#FCE4EC;strokeColor=#E91E63;strokeWidth=2;rounded=1;fontSize=14;fontStyle=1;" value="" vertex="1">
           <mxGeometry height="280" width="960" as="geometry" />
         </mxCell>
+        <mxCell id="i8W1nGUZCsyA2O9IEO3Q-2" parent="lane_processing" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Scaling&lt;br&gt;Add CDC&lt;br&gt;Sync Operation" vertex="1">
+          <mxGeometry height="65" width="120" x="550" y="160" as="geometry" />
+        </mxCell>
         <mxCell id="lane_processing_title" parent="Qld4n7ctP4lOtZgbt6Y--6" style="text;html=1;strokeColor=none;fillColor=#E91E63;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#FFFFFF;" value="④ PROCESSING PIPELINE (Step Functions State Machine)" vertex="1">
           <mxGeometry height="30" width="480" x="240" y="10" as="geometry" />
         </mxCell>
@@ -218,6 +221,9 @@
         </mxCell>
         <mxCell id="s3_deriv" parent="lane_datastores" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#60A337;gradientDirection=north;fillColor=#277116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" value="S3&#xa;derivatives/" vertex="1">
           <mxGeometry height="65" width="65" x="410" y="67.5" as="geometry" />
+        </mxCell>
+        <mxCell id="i8W1nGUZCsyA2O9IEO3Q-1" parent="lane_datastores" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Connection&lt;br&gt;Pool" vertex="1">
+          <mxGeometry height="30" width="60" x="80" y="160" as="geometry" />
         </mxCell>
         <mxCell id="lane_datastores_title" parent="Qld4n7ctP4lOtZgbt6Y--6" style="text;html=1;strokeColor=none;fillColor=#3F51B5;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#FFFFFF;" value="⑤ DATA STORES" vertex="1">
           <mxGeometry height="30" width="200" x="240" y="310" as="geometry" />
@@ -342,6 +348,9 @@
           <mxGeometry relative="1" x="-0.2" as="geometry">
             <mxPoint x="16" y="-20" as="offset" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="i8W1nGUZCsyA2O9IEO3Q-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;" value="&lt;ul&gt;&lt;li style=&quot;&quot;&gt;In case of any failure we can also use DLQ&lt;/li&gt;&lt;li style=&quot;&quot;&gt;Retry 3 time and send to SNS - Exponential Backoff + Jitter&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="60" width="410" x="1030" y="360" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

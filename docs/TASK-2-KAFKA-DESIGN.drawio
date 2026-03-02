@@ -1,6 +1,6 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.5.2 Chrome/142.0.7444.265 Electron/39.6.1 Safari/537.36" version="29.5.2">
   <diagram name="Kafka Product Import Pipeline" id="kafka-distributed-pipeline">
-    <mxGraphModel dx="3680" dy="914" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="1200" math="0" shadow="0">
+    <mxGraphModel dx="3482" dy="960" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="1200" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -109,7 +109,10 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="lane_processing" parent="1" style="swimlane;startSize=30;horizontal=1;fillColor=#FCE4EC;strokeColor=#E91E63;strokeWidth=2;rounded=1;fontSize=14;fontStyle=1;" value="" vertex="1">
-          <mxGeometry height="220" width="960" x="40" y="400" as="geometry" />
+          <mxGeometry height="220" width="960" x="30" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="PWSDQLyoeeiLawF0CQgR-2" parent="lane_processing" style="text;html=1;whiteSpace=wrap;strokeColor=#b85450;fillColor=#f8cecc;align=center;verticalAlign=middle;rounded=0;gradientColor=none;dashed=1;dashPattern=1 4;" value="CDC" vertex="1">
+          <mxGeometry height="30" width="60" x="540" y="140" as="geometry" />
         </mxCell>
         <mxCell id="lane_processing_title" parent="1" style="text;html=1;strokeColor=none;fillColor=#E91E63;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#FFFFFF;" value="④ STREAM PROCESSING (Kafka Consumers / Faust / Flink)" vertex="1">
           <mxGeometry height="30" width="480" x="280" y="410" as="geometry" />
@@ -217,8 +220,8 @@
         <mxCell id="lane_notify_title" parent="1" style="text;html=1;strokeColor=none;fillColor=#9C27B0;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#FFFFFF;" value="⑥ NOTIFICATIONS" vertex="1">
           <mxGeometry height="30" width="160" x="790" y="670" as="geometry" />
         </mxCell>
-        <mxCell id="smtp" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9C27B0;strokeColor=#6A1B9A;fontColor=#FFFFFF;fontSize=12;fontStyle=1;" value="SMTP Server&#xa;Email Service" vertex="1">
-          <mxGeometry height="60" width="100" x="780" y="730" as="geometry" />
+        <mxCell id="smtp" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9C27B0;strokeColor=#6A1B9A;fontColor=#FFFFFF;fontSize=12;fontStyle=1;" value="SMTP Server&lt;br&gt;Email Service&lt;div&gt;______________&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;div&gt;Webhook / WebSocket&amp;nbsp;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="140" x="750" y="730" as="geometry" />
         </mxCell>
         <mxCell id="narr1" edge="1" parent="1" source="consumer_notify" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#9C27B0;strokeWidth=2;endArrow=blockThin;endFill=1;" target="smtp">
           <mxGeometry relative="1" as="geometry">
@@ -338,6 +341,9 @@
         </mxCell>
         <mxCell id="search_label" parent="laJDzMNDuCe_HAo__5LL-10" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1;fontColor=#F9A825;" value="🔍 Full-Text Search&#xa;+ Aggregations" vertex="1">
           <mxGeometry height="30" width="130" x="20" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="PWSDQLyoeeiLawF0CQgR-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="OTEL --&amp;gt; log/metric aggregation --&amp;gt; Grafana and .." vertex="1">
+          <mxGeometry height="60" width="220" x="1030" y="670" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
