@@ -1,3 +1,4 @@
+from src.utils.combiner import FieldCombiner
 from src.utils.promotion import (
 	NEVER_PROMOTE,
 	Attributes,
@@ -7,6 +8,7 @@ from src.utils.promotion import (
 )
 
 __all__ = [
+	"FieldCombiner",
 	"NEVER_PROMOTE",
 	"Attributes",
 	"find_common_attributes",

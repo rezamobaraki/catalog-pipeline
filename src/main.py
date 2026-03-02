@@ -1,8 +1,13 @@
 import argparse
+import logging
 import sys
 from pathlib import Path
 
+from src.exceptions import PricatError
 from src.services import FileService, PipelineService
+from src.utils import FieldCombiner
+
+logging.basicConfig(level=logging.WARNING, format="%(levelname)s: %(message)s")
 
 
 def main() -> int:
@@ -10,6 +15,12 @@ def main() -> int:
     parser.add_argument("--input", "-i", required=True, type=Path, help="Input catalog CSV")
     parser.add_argument("--mappings", "-m", required=True, type=Path, help="Mappings CSV")
     parser.add_argument("--output", "-o", type=Path, help="Output JSON (default: stdout)")
+    parser.add_argument(
+        "--combine",
+        action="append",
+        metavar="FIELD1,FIELD2,...",
+        help="Combine fields (e.g., --combine price_buy_net,currency)",
+    )
     args = parser.parse_args()
 
     if not args.input.exists():
@@ -19,17 +30,31 @@ def main() -> int:
         print(f"Error: {args.mappings} not found", file=sys.stderr)
         return 1
 
-    file_service = FileService()
-    pipeline = PipelineService(file_service)
-    catalog = pipeline.transform(args.input, args.mappings)
+    try:
+        # Parse field combinations
+        combiner = None
+        if args.combine:
+            combinations = [tuple(spec.split(",")) for spec in args.combine]
+            combiner = FieldCombiner(combinations)
 
-    if args.output:
-        file_service.write_json(catalog, args.output)
-        print(f"Wrote {args.output}")
-    else:
-        print(catalog.to_json())
+        file_service = FileService()
+        pipeline = PipelineService(file_service, combiner)
+        catalog = pipeline.transform(args.input, args.mappings)
 
-    return 0
+        if args.output:
+            file_service.write_json(catalog, args.output)
+            print(f"Wrote {args.output}")
+        else:
+            print(catalog.to_json())
+
+        return 0
+
+    except PricatError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return 1
+    except Exception as e:
+        print(f"Unexpected error: {e}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":

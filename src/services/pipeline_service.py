@@ -3,12 +3,13 @@ from pathlib import Path
 from src.domains import Article, Catalog, Variation
 from src.services.file_service import FileService
 from src.services.mapping_service import MappingService
-from src.utils import NEVER_PROMOTE, group_by_article, promote_attributes
+from src.utils import NEVER_PROMOTE, FieldCombiner, group_by_article, promote_attributes
 
 
 class PipelineService:
-	def __init__(self, file_service: FileService) -> None:
+	def __init__(self, file_service: FileService, combiner: FieldCombiner | None = None) -> None:
 		self._file_service = file_service
+		self._combiner = combiner
 
 	def transform(
 			self,
@@ -17,6 +18,8 @@ class PipelineService:
 			article_key: str = "article_number",
 	) -> Catalog:
 		rows = self._read_and_map(pricat_path, mappings_path)
+		if self._combiner:
+			rows = [self._combiner.combine(row) for row in rows]
 		articles = self._build_articles(rows, article_key)
 		return self._build_catalog(articles)
 

@@ -68,7 +68,7 @@ class TestCompositeMapping:
 
 class TestMappingServiceLoad:
     def test_load_single_mapping(self, tmp_path: Path):
-        csv_content = "source,destination,source_type,destination_type\nwinter,Winter,season,season"
+        csv_content = "source;destination;source_type;destination_type\nwinter;Winter;season;season"
         csv_file = tmp_path / "mappings.csv"
         csv_file.write_text(csv_content)
 
@@ -81,8 +81,8 @@ class TestMappingServiceLoad:
 
     def test_load_composite_mapping(self, tmp_path: Path):
         csv_content = (
-            "source,destination,source_type,destination_type\n"
-            "EU|36,European size 36,size_group_code|size_code,size"
+            "source;destination;source_type;destination_type\n"
+            "EU|36;European size 36;size_group_code|size_code;size"
         )
         csv_file = tmp_path / "mappings.csv"
         csv_file.write_text(csv_content)
@@ -96,9 +96,9 @@ class TestMappingServiceLoad:
 
     def test_mapped_fields_tracked(self, tmp_path: Path):
         csv_content = (
-            "source,destination,source_type,destination_type\n"
-            "winter,Winter,season,season\n"
-            "EU|36,European size 36,size_group_code|size_code,size"
+            "source;destination;source_type;destination_type\n"
+            "winter;Winter;season;season\n"
+            "EU|36;European size 36;size_group_code|size_code;size"
         )
         csv_file = tmp_path / "mappings.csv"
         csv_file.write_text(csv_content)
