@@ -1,7 +1,6 @@
-import json
 from typing import Any
 
-from pydantic import BaseModel, Field, model_serializer
+from pydantic import BaseModel, Field
 
 from src.domains.article import Article
 
@@ -10,6 +9,10 @@ class Catalog(BaseModel):
     attributes: dict[str, Any] = Field(default_factory=dict)
     articles: list[Article] = Field(default_factory=list)
 
-    @model_serializer(mode="wrap")
-    def _wrap(self, handler):
-        return handler(self)
+    def to_json(self) -> str:
+        wrapper = CatalogWrapper(catalog=self)
+        return wrapper.model_dump_json(indent=4)
+
+
+class CatalogWrapper(BaseModel):
+    catalog: Catalog
