@@ -36,4 +36,4 @@ class FileService:
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
         with open("result.json", "w") as f:
-            f.write(catalog.model_dump_json(indent=4))
+            f.write(catalog.to_json())
