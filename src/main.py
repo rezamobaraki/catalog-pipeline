@@ -44,7 +44,7 @@ def main() -> int:
             file_service.write_json(catalog, args.output)
             print(f"Wrote {args.output}")
         else:
-            print(catalog.model_dump_json())
+            print(catalog.model_dump_json(indent=4))
 
         return 0
 

@@ -35,5 +35,5 @@ class FileService:
     def write_json(self, catalog: Catalog, path: str | Path) -> None:
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(catalog.model_dump_json())
+        with open("result.json", "w") as f:
+            f.write(catalog.model_dump_json(indent=4))

@@ -12,4 +12,4 @@ class Catalog(BaseModel):
 
     @model_serializer(mode="wrap")
     def _wrap(self, handler):
-        return {"catalog": handler(self)}
+        return handler(self)
