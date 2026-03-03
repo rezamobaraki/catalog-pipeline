@@ -3,7 +3,6 @@ from src.utils import FieldCombiner
 
 class TestFieldCombiner:
     def test_combines_and_removes_originals(self):
-        """price_buy_net + currency → price_buy_net_currency='58.5 EUR'"""
         combiner = FieldCombiner([("price_buy_net", "currency")])
         result = combiner.combine({"price_buy_net": "58.5", "currency": "EUR", "ean": "123"})
 
@@ -13,7 +12,6 @@ class TestFieldCombiner:
         assert result["ean"] == "123"
 
     def test_skips_when_field_missing(self):
-        """Does not combine when a field is missing."""
         combiner = FieldCombiner([("price_buy_net", "currency")])
         result = combiner.combine({"price_buy_net": "58.5", "ean": "123"})
 
@@ -21,7 +19,6 @@ class TestFieldCombiner:
         assert result["price_buy_net"] == "58.5"
 
     def test_multiple_specs(self):
-        """Multiple combine specs applied."""
         combiner = FieldCombiner([("a", "b"), ("c", "d")])
         result = combiner.combine({"a": "1", "b": "2", "c": "3", "d": "4", "e": "5"})
 
@@ -30,7 +27,6 @@ class TestFieldCombiner:
         assert result["e"] == "5"
 
     def test_three_fields(self):
-        """Combining three fields works."""
         combiner = FieldCombiner([("a", "b", "c")])
         result = combiner.combine({"a": "1", "b": "2", "c": "3"})
 
